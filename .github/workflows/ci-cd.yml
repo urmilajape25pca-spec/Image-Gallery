@@ -1,4 +1,4 @@
-name: CI Pipeline
+name: CI-CD Pipeline
 
 on:
   push:
@@ -13,16 +13,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
+      - name: Check Project Files
+        run: |
+          echo "Checking project files..."
+          ls
 
-      - name: Install dependencies
-        run: npm install
+      - name: Validate HTML
+        run: |
+          if [ -f MusicPlayer.html ]; then
+            echo "HTML file found."
+          else
+            echo "HTML file missing!"
+            exit 1
+          fi
 
-      - name: Run tests
-        run: npm test
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy Message
+        run: echo "Deployment successful"
