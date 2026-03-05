@@ -9,31 +9,24 @@ on:
       - main
 
 jobs:
+
   build:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
-      - name: Check Project Files
+      - name: Display Files
+        run: ls -la
+
+      - name: HTML Validation
         run: |
-          echo "Checking project files..."
-          ls
+          sudo npm install -g htmlhint
+          htmlhint *.html
 
-      - name: Validate HTML
-        run: |
-          if [ -f MusicPlayer.html ]; then
-            echo "HTML file found."
-          else
-            echo "HTML file missing!"
-            exit 1
-          fi
+      - name: Build Stage
+        run: echo "Static HTML project - No build required"
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Deploy Message
-        run: echo "Deployment successful"
+      - name: Deploy Stage
+        run: echo "Deployment step here"
